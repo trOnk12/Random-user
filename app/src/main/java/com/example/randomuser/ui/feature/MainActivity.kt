@@ -1,4 +1,4 @@
-package com.example.randomuser
+package com.example.randomuser.ui.feature
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
