@@ -59,5 +59,5 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
-    implementation "com.google.accompanist:accompanist-navigation-animationL:0.24.5-alpha"
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.24.5-alpha"
 }
