@@ -1,4 +1,4 @@
-package com.example.randomuser.users
+package com.example.randomuser.ui.feature.users
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
