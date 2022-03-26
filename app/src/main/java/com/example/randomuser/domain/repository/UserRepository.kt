@@ -1,4 +1,4 @@
-package com.example.randomuser.domain
+package com.example.randomuser.domain.repository
 
 import com.example.randomuser.data.source.remote.UserRemoteSource
 import com.example.randomuser.domain.mapper.UserResponseMapper
