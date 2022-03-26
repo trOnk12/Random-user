@@ -1,6 +1,6 @@
 package com.example.randomuser.data
 
-import UserResponse
+import com.example.randomuser.data.model.UserResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

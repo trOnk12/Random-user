@@ -1,3 +1,5 @@
+package com.example.randomuser.data.model
+
 import com.google.gson.annotations.SerializedName
 
 /*
