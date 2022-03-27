@@ -24,8 +24,3 @@ class MainCoroutineRule constructor(
     }
 }
 
-/**
- * Creates a new [CoroutineScope] with the rule's testDispatcher
- */
-@ExperimentalCoroutinesApi
-fun MainCoroutineRule.CoroutineScope(): CoroutineScope = TestScope(testDispatcher)

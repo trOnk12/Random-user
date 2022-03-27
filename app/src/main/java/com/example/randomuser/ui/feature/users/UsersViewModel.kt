@@ -1,13 +1,11 @@
 package com.example.randomuser.ui.feature.users
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomuser.domain.model.User
 import com.example.randomuser.domain.usecase.GetUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,23 +15,27 @@ class UsersViewModel
     private val getUsers: GetUsersUseCase
 ) : ViewModel() {
 
-    var userState by mutableStateOf(UsersState())
+    var userState = MutableStateFlow(UsersState())
 
     init {
         viewModelScope.launch {
-            userState = userState.copy(isLoading = true)
+            userState.emit(UsersState(isLoading = true))
 
             getUsers(15)
                 .onFailure {
-                    userState = userState.copy(
-                        isLoading = false,
-                        errorMessage = "we couldn't get the users"
+                    userState.emit(
+                        UsersState(
+                            isLoading = false,
+                            errorMessage = "we couldn't get the users"
+                        )
                     )
                 }
                 .onSuccess { users ->
-                    userState = userState.copy(
-                        isLoading = false,
-                        users = users
+                    userState.emit(
+                        UsersState(
+                            isLoading = false,
+                            users = users
+                        )
                     )
                 }
         }
