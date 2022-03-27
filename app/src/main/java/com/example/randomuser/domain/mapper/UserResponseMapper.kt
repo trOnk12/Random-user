@@ -8,7 +8,7 @@ class UserResponseMapper @Inject constructor(){
 
     fun toUsers(userResponse: UserResponse): List<User> {
         return userResponse.results.map { result ->
-            User(result.id.value)
+            User(result.id?.value ?: "")
         }
     }
 

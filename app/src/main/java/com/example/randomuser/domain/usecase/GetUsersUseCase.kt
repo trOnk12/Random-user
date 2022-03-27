@@ -1,5 +1,6 @@
 package com.example.randomuser.domain.usecase
 
+import android.util.Log
 import com.example.randomuser.domain.model.User
 import com.example.randomuser.domain.repository.UserRepository
 import javax.inject.Inject

@@ -25,7 +25,7 @@ data class Results (
 	@SerializedName("registered") val registered : Registered,
 	@SerializedName("phone") val phone : String,
 	@SerializedName("cell") val cell : String,
-	@SerializedName("id") val id : Id,
+	@SerializedName("id") val id : Id?,
 	@SerializedName("picture") val picture : Picture,
 	@SerializedName("nat") val nat : String
 )
