@@ -28,4 +28,5 @@ data class Results (
 	@SerializedName("id") val id : Id?,
 	@SerializedName("picture") val picture : Picture,
 	@SerializedName("nat") val nat : String
+
 )

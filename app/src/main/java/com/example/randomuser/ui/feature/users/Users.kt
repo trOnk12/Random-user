@@ -39,7 +39,7 @@ fun UsersList(users: List<User>, onOpenUserDetails: (String) -> Unit) {
         items(users) { user ->
             UserItem(
                 user = user,
-                onUserClicked = { onOpenUserDetails(user.id) }
+                onUserClicked = { onOpenUserDetails(user.uuid) }
             )
         }
     }
@@ -49,7 +49,7 @@ fun UsersList(users: List<User>, onOpenUserDetails: (String) -> Unit) {
 fun UserItem(user: User, onUserClicked: () -> Unit) {
     Column(Modifier.clickable { onUserClicked() }) {
         with(user) {
-            Text(text = id)
+            Text(text = uuid)
         }
     }
 }

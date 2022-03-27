@@ -5,7 +5,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.randomuser.ui.feature.userdetail.UserDetail
+import com.example.randomuser.ui.feature.userdetail.UserDetailScreen
 import com.example.randomuser.ui.feature.users.Users
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -35,7 +35,7 @@ fun Home() {
                     navArgument(name = "userId") { type = NavType.StringType },
                 )
             ) {
-                UserDetail()
+                UserDetailScreen()
             }
         }
     }

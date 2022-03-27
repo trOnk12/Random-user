@@ -2,7 +2,6 @@ package com.example.randomuser.domain.repository
 
 import com.example.randomuser.data.source.remote.UserRemoteSource
 import com.example.randomuser.domain.mapper.UserResponseMapper
-import com.example.randomuser.domain.model.User
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -10,7 +9,7 @@ class UserRepository @Inject constructor(
     private val userResponseMapper: UserResponseMapper
 ) {
 
-    suspend fun getUsers(resultSize: Int): List<User> =
+    suspend fun getUsers(resultSize: Int) =
         userResponseMapper.toUsers(userResponse = userRemoteSource.getUsers(resultSize))
 
 }
