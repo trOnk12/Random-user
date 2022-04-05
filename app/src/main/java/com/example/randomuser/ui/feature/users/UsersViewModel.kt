@@ -2,47 +2,23 @@ package com.example.randomuser.ui.feature.users
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.randomuser.domain.model.User
-import com.example.randomuser.domain.usecase.GetUsersUseCase
+import com.example.randomuser.domain.usecase.GetPagingUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class UsersViewModel
 @Inject constructor(
-    private val getUsersCacheProvider: GetUsersLocalCacheProvider
+    getPagingUsersUseCase: GetPagingUsersUseCase
 ) : ViewModel() {
 
-    var userState = MutableStateFlow(UsersState())
-
-    init {
-        viewModelScope.launch {
-            userState.emit(UsersState(isLoading = true))
-
-            getUsersCacheProvider.getUsers()
-                .onFailure {
-                    userState.emit(
-                        UsersState(
-                            isLoading = false,
-                            errorMessage = "we couldn't get the users"
-                        )
-                    )
-                }
-                .onSuccess { users ->
-                    userState.emit(
-                        UsersState(
-                            isLoading = false,
-                            users = users
-                        )
-                    )
-                }
-        }
-    }
+    val pagedUserList: Flow<PagingData<User>> =
+        getPagingUsersUseCase(PagingConfig(pageSize = 12)).cachedIn(viewModelScope)
 
 }
 
@@ -58,28 +34,28 @@ class UsersViewModel
 // has a end-point returning a user by id because,
 // ideally, there should be an end-point on the back-end allowing us to get the user by id
 // that way we would create an use case that would ask the back-end for that user
-@Singleton
-class GetUsersLocalCacheProvider @Inject constructor(
-    private val getUsersUseCase: GetUsersUseCase
-) {
-
-    private var currentUsersByUuid = mapOf<String, User>()
-
-    suspend fun getUsers(resultSize: Int = 15, page: Int = 1): Result<List<User>> {
-        val result = getUsersUseCase(resultSize, page)
-
-        withContext(Dispatchers.Default) {
-            result.onSuccess { fetchedUsers ->
-                currentUsersByUuid = fetchedUsers.associateBy { it.uuid }
-            }
-        }
-
-        return result
-    }
-
-    fun getUser(uuid: String): User = currentUsersByUuid[uuid]!!
-
-}
+//@Singleton
+//class GetUsersLocalCacheProvider @Inject constructor(
+//    private val getPagingUsersUseCase: GetPagingUsersUseCase
+//) {
+//
+//    private var currentUsersByUuid = mapOf<String, User>()
+//
+//    suspend fun getUsers(resultSize: Int = 15, page: Int = 1): Result<List<User>> {
+//        val result = getPagingUsersUseCase(resultSize, page)
+//
+//        withContext(Dispatchers.Default) {
+//            result.onSuccess { fetchedUsers ->
+//                currentUsersByUuid = fetchedUsers.associateBy { it.uuid }
+//            }
+//        }
+//
+//        return result
+//    }
+//
+//    fun getUser(uuid: String): User = currentUsersByUuid[uuid]!!
+//
+//}
 
 data class UsersState(
     val users: List<User> = emptyList(),

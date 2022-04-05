@@ -3,7 +3,7 @@ package com.example.randomuser
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.example.randomuser.domain.model.User
-import com.example.randomuser.domain.usecase.GetUsersUseCase
+import com.example.randomuser.domain.usecase.GetPagingUsersUseCase
 import com.example.randomuser.ui.feature.users.UsersState
 import com.example.randomuser.ui.feature.users.UsersViewModel
 import com.example.randomuser.utility.MainCoroutineRule
@@ -28,7 +28,7 @@ class UsersViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     @MockK
-    lateinit var getUsersUseCase: GetUsersUseCase
+    lateinit var getPagingUsersUseCase: GetPagingUsersUseCase
 
     @Before
     fun setUp() {
@@ -38,9 +38,9 @@ class UsersViewModelTest {
     @Test
     fun `'when getting users succeeds viewmodel handles the success as expected'`() = runTest {
         //given
-        coEvery { getUsersUseCase(any()) } returns Result.success(listOf(User("testId")))
+        coEvery { getPagingUsersUseCase(any()) } returns Result.success(listOf(User("testId")))
         //when
-        val usersViewModel = UsersViewModel(getUsersUseCase)
+        val usersViewModel = UsersViewModel(getPagingUsersUseCase)
         // then
         usersViewModel.userState.test {
             assertEquals(
@@ -52,15 +52,15 @@ class UsersViewModelTest {
                 awaitItem()
             )
         }
-        coVerify { getUsersUseCase(any()) }
+        coVerify { getPagingUsersUseCase(any()) }
     }
 
     @Test
     fun `'when getting users fails viewmodel handles the failure as expected'`() = runTest {
         //given
-        coEvery { getUsersUseCase(any()) } returns Result.failure(IllegalStateException())
+        coEvery { getPagingUsersUseCase(any()) } returns Result.failure(IllegalStateException())
         //when
-        val usersViewModel = UsersViewModel(getUsersUseCase)
+        val usersViewModel = UsersViewModel(getPagingUsersUseCase)
         // then
         usersViewModel.userState.test {
             assertEquals(
@@ -72,7 +72,7 @@ class UsersViewModelTest {
                 awaitItem()
             )
         }
-        coVerify { getUsersUseCase(any()) }
+        coVerify { getPagingUsersUseCase(any()) }
     }
 
     private val testUsers = listOf(User("testId"))

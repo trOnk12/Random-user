@@ -1,15 +1,14 @@
 package com.example.randomuser.domain.repository
 
-import com.example.randomuser.data.source.remote.UserRemoteSource
-import com.example.randomuser.domain.mapper.UserResponseMapper
+import androidx.paging.PagingSource
+import com.example.randomuser.data.source.paging.UsersPagingSource
+import com.example.randomuser.domain.model.User
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val userRemoteSource: UserRemoteSource,
-    private val userResponseMapper: UserResponseMapper
+    private val usersPagingSource: UsersPagingSource
 ) {
 
-    suspend fun getUsers(resultSize: Int) =
-        userResponseMapper.toUsers(userResponse = userRemoteSource.getUsers(resultSize))
+    fun userPagingSource(): PagingSource<Int, User> = usersPagingSource.getPagingSource()
 
 }
