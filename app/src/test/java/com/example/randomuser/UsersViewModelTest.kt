@@ -1,23 +1,27 @@
 package com.example.randomuser
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import app.cash.turbine.test
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
 import com.example.randomuser.domain.model.User
 import com.example.randomuser.domain.usecase.GetPagingUsersUseCase
-import com.example.randomuser.ui.feature.users.UsersState
 import com.example.randomuser.ui.feature.users.UsersViewModel
+import com.example.randomuser.ui.feature.users.model.UserItem
 import com.example.randomuser.utility.MainCoroutineRule
+import com.example.randomuser.utility.TestLazyPaging
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 class UsersViewModelTest {
 
@@ -38,43 +42,41 @@ class UsersViewModelTest {
     @Test
     fun `'when getting users succeeds viewmodel handles the success as expected'`() = runTest {
         //given
-        coEvery { getPagingUsersUseCase(any()) } returns Result.success(listOf(User("testId")))
-        //when
-        val usersViewModel = UsersViewModel(getPagingUsersUseCase)
-        // then
-        usersViewModel.userState.test {
-            assertEquals(
-                UsersState(
-                    isLoading = false,
-                    users = testUsers,
-                    errorMessage = ""
-                ),
-                awaitItem()
+        coEvery { getPagingUsersUseCase.invoke(any()) } returns flow {
+            emit(
+                PagingData.from(
+                    listOf(
+                        User(
+                            uuid = "",
+                            avatarUrl = "",
+                            name = "",
+                            email = "",
+                            street = "",
+                            city = "",
+                            postcode = "",
+                            gender = "",
+                            phone = ""
+                        )
+                    )
+                )
             )
         }
-        coVerify { getPagingUsersUseCase(any()) }
-    }
 
-    @Test
-    fun `'when getting users fails viewmodel handles the failure as expected'`() = runTest {
-        //given
-        coEvery { getPagingUsersUseCase(any()) } returns Result.failure(IllegalStateException())
         //when
-        val usersViewModel = UsersViewModel(getPagingUsersUseCase)
-        // then
-        usersViewModel.userState.test {
-            assertEquals(
-                UsersState(
-                    isLoading = false,
-                    errorMessage = "we couldn't get the users",
-                    users = emptyList()
-                ),
-                awaitItem()
-            )
-        }
-        coVerify { getPagingUsersUseCase(any()) }
-    }
+        val pagedUserListPaging = TestLazyPaging(
+            coroutineRule.testDispatcher,
+            UsersViewModel(getPagingUsersUseCase).pagedUserList
+        )
 
-    private val testUsers = listOf(User("testId"))
+        pagedUserListPaging.collectPagingData()
+        // then
+
+        assertEquals(
+            listOf(UserItem(id = "", name = "", avatarUrl = "")),
+            pagedUserListPaging.getSnapShot().items
+        )
+
+        coVerify { getPagingUsersUseCase.invoke(any()) }
+    }
 
 }
