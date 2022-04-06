@@ -8,8 +8,12 @@ class GetUserUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(userId: String): User {
-        return userRepository.get(userId)
+    suspend operator fun invoke(userId: String): Result<User> {
+        return try {
+            Result.success(userRepository.get(userId))
+        } catch (exception: Exception) {
+            Result.failure(exception)
+        }
     }
 
 }

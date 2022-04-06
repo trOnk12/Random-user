@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -60,7 +61,9 @@ fun UsersList(
     usersPagingItems: LazyPagingItems<UserItem>,
     onOpenUserDetails: (String) -> Unit
 ) {
-    LazyColumn {
+    val lazyListState = rememberLazyListState()
+
+    LazyColumn(state = lazyListState) {
         items(usersPagingItems) { userItem ->
             if (userItem != null) {
                 UserListItem(

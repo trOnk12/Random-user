@@ -22,7 +22,6 @@ class UsersViewModel
             PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = true,
-                prefetchDistance = 50
             )
         ).map { user ->
             user.map {

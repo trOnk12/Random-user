@@ -1,6 +1,7 @@
 package com.example.randomuser.ui.feature.userdetail
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -36,17 +38,25 @@ fun UserDetailScreen(userDetailViewModel: UserDetailViewModel = hiltViewModel())
     } else {
         userDetailState.userDetail?.apply {
             Column {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(avatarUrl)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = stringResource(R.string.label_user_avatar),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .height(256.dp)
+                Box(
+                    Modifier
                         .fillMaxWidth()
-                )
+                        .wrapContentHeight()
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(avatarUrl)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = stringResource(R.string.label_user_avatar),
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .height(256.dp)
+                            .width(256.dp)
+                            .clip(CircleShape)
+                            .align(Alignment.Center)
+                    )
+                }
                 Text(text = "Name: $name")
                 Text(text = "Email: $email")
                 Text(text = "Street: $street")
