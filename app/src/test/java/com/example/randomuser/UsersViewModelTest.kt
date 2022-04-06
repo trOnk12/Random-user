@@ -40,43 +40,43 @@ class UsersViewModelTest {
     }
 
     @Test
-    fun `'when getting users succeeds viewmodel handles the success as expected'`() = runTest {
-        //given
-        coEvery { getPagingUsersUseCase.invoke(any()) } returns flow {
-            emit(
-                PagingData.from(
-                    listOf(
-                        User(
-                            uuid = "",
-                            avatarUrl = "",
-                            name = "",
-                            email = "",
-                            street = "",
-                            city = "",
-                            postcode = "",
-                            gender = "",
-                            phone = ""
+    fun `'when getting paging users succeeds viewmodel propagates the result as expected'`() =
+        runTest {
+            //given
+            coEvery { getPagingUsersUseCase.invoke(any()) } returns flow {
+                emit(
+                    PagingData.from(
+                        listOf(
+                            testUser
                         )
                     )
                 )
+            }
+            //when
+            val pagedUserListPaging = TestLazyPaging(
+                testDispatcher = coroutineRule.testDispatcher,
+                flow = UsersViewModel(getPagingUsersUseCase).pagedUserList
             )
+            pagedUserListPaging.collectPagingData()
+            // then
+            assertEquals(
+                listOf(UserItem(id = "testUuid", name = "testName", avatarUrl = "testAvatarUrl")),
+                pagedUserListPaging.getSnapShot().items
+            )
+            coVerify { getPagingUsersUseCase.invoke(any()) }
         }
 
-        //when
-        val pagedUserListPaging = TestLazyPaging(
-            coroutineRule.testDispatcher,
-            UsersViewModel(getPagingUsersUseCase).pagedUserList
-        )
-
-        pagedUserListPaging.collectPagingData()
-        // then
-
-        assertEquals(
-            listOf(UserItem(id = "", name = "", avatarUrl = "")),
-            pagedUserListPaging.getSnapShot().items
-        )
-
-        coVerify { getPagingUsersUseCase.invoke(any()) }
-    }
-
 }
+
+
+private val testUser = User(
+    uuid = "testUuid",
+    avatarUrl = "testAvatarUrl",
+    name = "testName",
+    email = "testEmail",
+    street = "testStreet",
+    city = "testCity",
+    postcode = "testPostcode",
+    gender = "testGender",
+    phone = "testPhone"
+)
