@@ -10,7 +10,7 @@ import com.example.randomuser.data.source.local.entity.UserRemoteKeyEntity
 interface UserRemoteKeyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(userRemoteKeyEntity: UserRemoteKeyEntity)
+    suspend fun insertAll(userRemoteKeyEntity: List<UserRemoteKeyEntity>)
 
     @Query("SELECT * FROM userRemoteKey WHERE userId = :userId")
     suspend fun getRemoteKey(userId: String): UserRemoteKeyEntity
