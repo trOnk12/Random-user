@@ -10,7 +10,8 @@ class UserResponseMapper @Inject constructor() {
         return userResponse.results.map { result ->
             User(
                 uuid = result.login.uuid,
-                name = result.name.first
+                name = result.name.first,
+                avatarUrl = result.picture.large
             )
         }
     }

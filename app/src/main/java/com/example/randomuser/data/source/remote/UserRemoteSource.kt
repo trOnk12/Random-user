@@ -10,8 +10,12 @@ class UserRemoteSource @Inject constructor(
     private val userResponseMapper: UserResponseMapper
 ) {
 
-    suspend fun getUsers(resultSize: Int): List<User> =
-        userResponseMapper.toUsers(userResponse = randomUserApi.getUsers(resultSize))
+    suspend fun getUsers(page: Int): List<User> =
+        userResponseMapper.toUsers(userResponse = randomUserApi.getUsers(
+            page = page,
+            resultSize = 20,
+            seed = "abc"
+        ))
 
 }
 
