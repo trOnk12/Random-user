@@ -4,7 +4,7 @@ import com.example.randomuser.domain.model.User
 import com.example.randomuser.domain.repository.UserRepository
 import javax.inject.Inject
 
-class GetUserUseCase @Inject constructor(
+class GetUserDetailsUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 

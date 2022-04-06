@@ -39,7 +39,7 @@ fun Users(
 
 @Composable
 fun UsersScreen(
-    usersState: LazyPagingItems<UserEntity>,
+    usersState: LazyPagingItems<User>,
     onOpenUserDetails: (String) -> Unit
 ) {
     UsersList(
@@ -49,13 +49,13 @@ fun UsersScreen(
 }
 
 @Composable
-fun UsersList(usersPagingItems: LazyPagingItems<UserEntity>, onOpenUserDetails: (String) -> Unit) {
+fun UsersList(usersPagingItems: LazyPagingItems<User>, onOpenUserDetails: (String) -> Unit) {
     LazyColumn {
         items(usersPagingItems) { user ->
             if (user != null) {
                 UserItem(
                     user = user,
-                    onUserClicked = { onOpenUserDetails(user.id) }
+                    onUserClicked = { onOpenUserDetails(user.uuid) }
                 )
             }
         }
@@ -95,7 +95,7 @@ fun LoadingItem() {
 
 @Composable
 fun UserItem(
-    user: UserEntity,
+    user: User,
     onUserClicked: () -> Unit
 ) {
     Column(

@@ -5,6 +5,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.randomuser.data.source.local.entity.UserEntity
+import com.example.randomuser.domain.model.User
 import com.example.randomuser.domain.usecase.GetPagingUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ class UsersViewModel
     getPagingUsersUseCase: GetPagingUsersUseCase
 ) : ViewModel() {
 
-    val pagedUserList: Flow<PagingData<UserEntity>> =
+    val pagedUserList: Flow<PagingData<User>> =
         getPagingUsersUseCase(PagingConfig(pageSize = 10))
 
 }

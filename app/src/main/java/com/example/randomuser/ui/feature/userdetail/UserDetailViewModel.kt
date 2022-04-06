@@ -3,7 +3,7 @@ package com.example.randomuser.ui.feature.userdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.randomuser.domain.usecase.GetUserUseCase
+import com.example.randomuser.domain.usecase.GetUserDetailsUseCase
 import com.example.randomuser.ui.feature.userdetail.model.UserDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    getUserUseCase: GetUserUseCase,
+    getUserDetailsUseCase: GetUserDetailsUseCase,
 ) : ViewModel() {
 
     var userDetailState = MutableStateFlow(UserDetailState())
@@ -26,7 +26,7 @@ class UserDetailViewModel @Inject constructor(
                 )
             )
 
-            val user = getUserUseCase((savedStateHandle.get<String>("userId")!!))
+            val user = getUserDetailsUseCase((savedStateHandle.get<String>("userId")!!))
 
             userDetailState.emit(
                 UserDetailState(
