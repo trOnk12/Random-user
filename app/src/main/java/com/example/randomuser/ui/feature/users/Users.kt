@@ -16,14 +16,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.CombinedLoadStates
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.randomuser.data.source.local.entity.UserEntity
 import com.example.randomuser.domain.model.User
 
+@ExperimentalPagingApi
 @Composable
 fun Users(
     usersViewModel: UsersViewModel = hiltViewModel(),
@@ -36,7 +39,7 @@ fun Users(
 
 @Composable
 fun UsersScreen(
-    usersState: LazyPagingItems<User>,
+    usersState: LazyPagingItems<UserEntity>,
     onOpenUserDetails: (String) -> Unit
 ) {
     UsersList(
@@ -46,13 +49,13 @@ fun UsersScreen(
 }
 
 @Composable
-fun UsersList(usersPagingItems: LazyPagingItems<User>, onOpenUserDetails: (String) -> Unit) {
+fun UsersList(usersPagingItems: LazyPagingItems<UserEntity>, onOpenUserDetails: (String) -> Unit) {
     LazyColumn {
         items(usersPagingItems) { user ->
             if (user != null) {
                 UserItem(
                     user = user,
-                    onUserClicked = { onOpenUserDetails(user.uuid) }
+                    onUserClicked = { onOpenUserDetails(user.id) }
                 )
             }
         }
@@ -92,7 +95,7 @@ fun LoadingItem() {
 
 @Composable
 fun UserItem(
-    user: User,
+    user: UserEntity,
     onUserClicked: () -> Unit
 ) {
     Column(
@@ -119,5 +122,3 @@ fun UserItem(
         }
     }
 }
-
-

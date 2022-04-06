@@ -1,6 +1,7 @@
 package com.example.randomuser.domain.mapper
 
 import com.example.randomuser.data.model.UserResponse
+import com.example.randomuser.data.source.local.entity.UserEntity
 import com.example.randomuser.domain.model.User
 import javax.inject.Inject
 
@@ -10,6 +11,16 @@ class UserResponseMapper @Inject constructor() {
         return userResponse.results.map { result ->
             User(
                 uuid = result.login.uuid,
+                name = result.name.first,
+                avatarUrl = result.picture.large
+            )
+        }
+    }
+
+    fun toEntities(userResponse: UserResponse): List<UserEntity> {
+        return userResponse.results.map { result ->
+            UserEntity(
+                id = result.login.uuid,
                 name = result.name.first,
                 avatarUrl = result.picture.large
             )

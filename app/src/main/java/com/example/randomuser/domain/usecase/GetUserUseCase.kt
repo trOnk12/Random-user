@@ -9,7 +9,7 @@ class GetUserUseCase @Inject constructor(
 ) {
 
     operator fun invoke(userId: String): User? {
-        return userRepository.getUserById(userId)
+       return null
     }
 
 }

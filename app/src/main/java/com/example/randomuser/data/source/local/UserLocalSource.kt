@@ -1,16 +1,14 @@
 package com.example.randomuser.data.source.local
 
-import com.example.randomuser.data.source.paging.CurrentPageUserSource
-import com.example.randomuser.domain.model.User
+import androidx.paging.PagingSource
+import com.example.randomuser.data.source.local.dao.UserDao
+import com.example.randomuser.data.source.local.entity.UserEntity
 import javax.inject.Inject
 
 class UserLocalSource @Inject constructor(
-    private val currentPageUserSource: CurrentPageUserSource
+    private val userDao: UserDao
 ) {
 
-    fun getUserById(id: String) = currentPageUserSource.getUserByIdFromCurrentPage(id)
+    fun getAllUsers(): PagingSource<Int, UserEntity> = userDao.getAllUsers()
 
-    suspend fun addUsers(users: List<User>) {
-        currentPageUserSource.addUsers(users)
-    }
 }

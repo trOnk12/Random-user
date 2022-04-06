@@ -1,6 +1,6 @@
 package com.example.randomuser.di
 
-import com.example.randomuser.data.RandomUserApi
+import com.example.randomuser.data.source.remote.api.RandomUserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,6 +1,6 @@
 package com.example.randomuser.data.source.remote
 
-import com.example.randomuser.data.RandomUserApi
+import com.example.randomuser.data.source.remote.api.RandomUserApi
 import com.example.randomuser.domain.mapper.UserResponseMapper
 import com.example.randomuser.domain.model.User
 import javax.inject.Inject

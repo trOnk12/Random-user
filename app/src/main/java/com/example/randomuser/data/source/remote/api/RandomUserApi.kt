@@ -1,4 +1,4 @@
-package com.example.randomuser.data
+package com.example.randomuser.data.source.remote.api
 
 import com.example.randomuser.data.model.UserResponse
 import retrofit2.http.GET

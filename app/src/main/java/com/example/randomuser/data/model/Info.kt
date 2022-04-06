@@ -18,6 +18,6 @@ data class Info (
 
 	@SerializedName("seed") val seed : String,
 	@SerializedName("results") val results : Int,
-	@SerializedName("page") val page : Int,
+	@SerializedName("page") val page : Int?,
 	@SerializedName("version") val version : Double
 )
