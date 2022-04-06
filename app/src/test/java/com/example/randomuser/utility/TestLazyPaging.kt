@@ -83,7 +83,6 @@ class TestLazyPaging<T : Any> constructor(
         pagingDataDiffer.refresh()
     }
 
-
     private val incompleteLoadState = LoadState.NotLoading(false)
 
     private val initialLoadStates = LoadStates(

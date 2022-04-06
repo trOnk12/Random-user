@@ -8,15 +8,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -27,6 +30,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.randomuser.R
 import com.example.randomuser.ui.feature.users.model.UserItem
+import kotlinx.coroutines.flow.Flow
 
 @ExperimentalPagingApi
 @Composable
@@ -34,7 +38,8 @@ fun Users(
     usersViewModel: UsersViewModel = hiltViewModel(),
     onOpenUserDetails: (String) -> Unit
 ) {
-    val userListItems = usersViewModel.pagedUserList.collectAsLazyPagingItems()
+    val userListItems = rememberFlowWithLifecycle(usersViewModel.pagedUserList)
+        .collectAsLazyPagingItems()
 
     UsersScreen(userListItems, onOpenUserDetails)
 }
@@ -51,7 +56,10 @@ fun UsersScreen(
 }
 
 @Composable
-fun UsersList(usersPagingItems: LazyPagingItems<UserItem>, onOpenUserDetails: (String) -> Unit) {
+fun UsersList(
+    usersPagingItems: LazyPagingItems<UserItem>,
+    onOpenUserDetails: (String) -> Unit
+) {
     LazyColumn {
         items(usersPagingItems) { userItem ->
             if (userItem != null) {
@@ -122,4 +130,16 @@ fun UserListItem(
             Text(text = name)
         }
     }
+}
+
+@Composable
+fun <T> rememberFlowWithLifecycle(
+    flow: Flow<T>,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): Flow<T> = remember(flow, lifecycle) {
+    flow.flowWithLifecycle(
+        lifecycle = lifecycle,
+        minActiveState = minActiveState
+    )
 }

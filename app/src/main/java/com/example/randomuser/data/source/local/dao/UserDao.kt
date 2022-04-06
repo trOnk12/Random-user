@@ -12,7 +12,7 @@ import com.example.randomuser.data.source.local.entity.UserEntity
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(doggoModel: List<UserEntity>)
+    suspend fun insertAll(users: List<UserEntity>)
 
     @Query("SELECT * FROM user")
     fun getAllUsers(): PagingSource<Int, UserEntity>

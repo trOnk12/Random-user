@@ -1,10 +1,8 @@
 package com.example.randomuser.ui.feature.users
 
 import androidx.lifecycle.ViewModel
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.example.randomuser.domain.usecase.GetPagingUsersUseCase
 import com.example.randomuser.ui.feature.users.model.UserItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +18,13 @@ class UsersViewModel
 ) : ViewModel() {
 
     val pagedUserList: Flow<PagingData<UserItem>> =
-        getPagingUsersUseCase(PagingConfig(pageSize = 10)).map { user ->
+        getPagingUsersUseCase(
+            PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                prefetchDistance = 50
+            )
+        ).map { user ->
             user.map {
                 UserItem(
                     id = it.uuid,
@@ -28,6 +32,6 @@ class UsersViewModel
                     avatarUrl = it.avatarUrl
                 )
             }
-        }
+        }.cachedIn(viewModelScope)
 
 }
