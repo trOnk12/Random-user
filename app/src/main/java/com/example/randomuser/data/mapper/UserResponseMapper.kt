@@ -1,4 +1,4 @@
-package com.example.randomuser.domain.mapper
+package com.example.randomuser.data.mapper
 
 import com.example.randomuser.data.model.UserResponse
 import com.example.randomuser.data.source.local.entity.UserEntity

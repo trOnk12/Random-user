@@ -11,4 +11,6 @@ class UserRepository @Inject constructor(
 
     fun userPagingSource(): PagingSource<Int, UserEntity> = userLocalSource.getAllUsers()
 
+    suspend fun getUser(id: String) = userLocalSource.getUser(id)
+
 }

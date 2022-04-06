@@ -1,7 +1,7 @@
 package com.example.randomuser
 
 import com.example.randomuser.data.model.*
-import com.example.randomuser.domain.mapper.UserResponseMapper
+import com.example.randomuser.data.mapper.UserResponseMapper
 import com.example.randomuser.domain.model.User
 import org.junit.Assert
 import org.junit.Test

@@ -8,8 +8,8 @@ class GetUserUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    operator fun invoke(userId: String): User? {
-       return null
+    suspend operator fun invoke(userId: String): User {
+        return userRepository.getUser(userId)
     }
 
 }

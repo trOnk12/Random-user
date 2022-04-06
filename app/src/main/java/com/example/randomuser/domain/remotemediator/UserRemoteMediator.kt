@@ -1,20 +1,20 @@
-package com.example.randomuser.domain.mediator
+package com.example.randomuser.domain.remotemediator
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.example.randomuser.data.mapper.UserResponseMapper
 import com.example.randomuser.data.source.local.database.AppDatabase
 import com.example.randomuser.data.source.local.entity.UserEntity
 import com.example.randomuser.data.source.local.entity.UserRemoteKeyEntity
 import com.example.randomuser.data.source.remote.api.RandomUserApi
-import com.example.randomuser.domain.mapper.UserResponseMapper
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 @ExperimentalPagingApi
-class UserMediator @Inject constructor(
+class UserRemoteMediator @Inject constructor(
     private val appDatabase: AppDatabase,
     private val randomUserApi: RandomUserApi,
     private val userResponseMapper: UserResponseMapper

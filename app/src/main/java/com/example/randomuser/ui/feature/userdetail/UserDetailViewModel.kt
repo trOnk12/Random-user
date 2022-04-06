@@ -19,13 +19,20 @@ class UserDetailViewModel @Inject constructor(
     var userDetailState = MutableStateFlow(UserDetailState())
 
     init {
-        val user = getUserUseCase((savedStateHandle.get<String>("userId")!!))
-
         viewModelScope.launch {
             userDetailState.emit(
                 UserDetailState(
+                    isLoading = true
+                )
+            )
+
+            val user = getUserUseCase((savedStateHandle.get<String>("userId")!!))
+
+            userDetailState.emit(
+                UserDetailState(
+                    isLoading = false,
                     userDetail = UserDetail(
-                        name = user!!.name,
+                        name = user.name,
                         gender = "female"
                     )
                 )
@@ -35,4 +42,4 @@ class UserDetailViewModel @Inject constructor(
 
 }
 
-data class UserDetailState(val userDetail: UserDetail? = null)
+data class UserDetailState(val userDetail: UserDetail? = null, val isLoading: Boolean = false)

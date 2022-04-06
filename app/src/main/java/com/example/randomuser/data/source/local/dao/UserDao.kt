@@ -17,4 +17,7 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAllUsers(): PagingSource<Int, UserEntity>
 
+    @Query("SELECT * FROM user WHERE id = :id")
+    suspend fun getUser(id: String): UserEntity
+
 }
