@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.CombinedLoadStates
@@ -23,8 +24,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.randomuser.data.source.local.entity.UserEntity
-import com.example.randomuser.domain.model.User
+import com.example.randomuser.R
+import com.example.randomuser.ui.feature.users.model.UserItem
 
 @ExperimentalPagingApi
 @Composable
@@ -39,7 +40,7 @@ fun Users(
 
 @Composable
 fun UsersScreen(
-    usersState: LazyPagingItems<User>,
+    usersState: LazyPagingItems<UserItem>,
     onOpenUserDetails: (String) -> Unit
 ) {
     UsersList(
@@ -49,13 +50,13 @@ fun UsersScreen(
 }
 
 @Composable
-fun UsersList(usersPagingItems: LazyPagingItems<User>, onOpenUserDetails: (String) -> Unit) {
+fun UsersList(usersPagingItems: LazyPagingItems<UserItem>, onOpenUserDetails: (String) -> Unit) {
     LazyColumn {
-        items(usersPagingItems) { user ->
-            if (user != null) {
-                UserItem(
-                    user = user,
-                    onUserClicked = { onOpenUserDetails(user.uuid) }
+        items(usersPagingItems) { userItem ->
+            if (userItem != null) {
+                UserListItem(
+                    userItem = userItem,
+                    onUserClicked = { onOpenUserDetails(userItem.id) }
                 )
             }
         }
@@ -94,8 +95,8 @@ fun LoadingItem() {
 }
 
 @Composable
-fun UserItem(
-    user: User,
+fun UserListItem(
+    userItem: UserItem,
     onUserClicked: () -> Unit
 ) {
     Column(
@@ -104,20 +105,19 @@ fun UserItem(
             .clickable { onUserClicked() }
             .fillMaxWidth(),
     ) {
-        with(user) {
+        with(userItem) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(avatarUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = "test",
+                contentDescription = stringResource(R.string.label_user_avatar),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(128.dp)
                     .width(128.dp)
                     .clip(CircleShape)
             )
-
             Text(text = name)
         }
     }

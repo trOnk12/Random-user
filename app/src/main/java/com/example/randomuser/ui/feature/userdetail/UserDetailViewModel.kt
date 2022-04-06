@@ -3,7 +3,8 @@ package com.example.randomuser.ui.feature.userdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.randomuser.domain.usecase.GetUserDetailsUseCase
+import com.example.randomuser.domain.usecase.GetUserUseCase
+import com.example.randomuser.ui.feature.USER_DETAIL_ARGUMENT_ID
 import com.example.randomuser.ui.feature.userdetail.model.UserDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    getUserDetailsUseCase: GetUserDetailsUseCase,
+    getUserUseCase: GetUserUseCase,
 ) : ViewModel() {
 
     var userDetailState = MutableStateFlow(UserDetailState())
@@ -26,16 +27,22 @@ class UserDetailViewModel @Inject constructor(
                 )
             )
 
-            val user = getUserDetailsUseCase((savedStateHandle.get<String>("userId")!!))
-
             userDetailState.emit(
-                UserDetailState(
-                    isLoading = false,
-                    userDetail = UserDetail(
-                        name = user.name,
-                        gender = "female"
+                with(getUserUseCase((savedStateHandle.get<String>(USER_DETAIL_ARGUMENT_ID)!!))) {
+                    UserDetailState(
+                        isLoading = false,
+                        userDetail = UserDetail(
+                            name = name,
+                            gender = gender,
+                            avatarUrl = avatarUrl,
+                            email = email,
+                            street = street,
+                            city = city,
+                            postcode = postcode,
+                            phone = phone
+                        )
                     )
-                )
+                }
             )
         }
     }

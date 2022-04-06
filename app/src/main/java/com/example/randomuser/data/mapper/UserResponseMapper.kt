@@ -9,21 +9,37 @@ class UserResponseMapper @Inject constructor() {
 
     fun toUsers(userResponse: UserResponse): List<User> {
         return userResponse.results.map { result ->
-            User(
-                uuid = result.login.uuid,
-                name = result.name.first,
-                avatarUrl = result.picture.large
-            )
+            with(result) {
+                User(
+                    uuid = login.uuid,
+                    name = name.first,
+                    avatarUrl = picture.large,
+                    email = email,
+                    street = location.street.name,
+                    city = location.city,
+                    postcode = location.postcode,
+                    gender = gender,
+                    phone = phone,
+                )
+            }
         }
     }
 
     fun toEntities(userResponse: UserResponse): List<UserEntity> {
         return userResponse.results.map { result ->
-            UserEntity(
-                id = result.login.uuid,
-                name = result.name.first,
-                avatarUrl = result.picture.large
-            )
+            with(result) {
+                UserEntity(
+                    id = login.uuid,
+                    name = name.first,
+                    avatarUrl = picture.large,
+                    email = email,
+                    street = location.street.name,
+                    city = location.city,
+                    postcode = location.postcode,
+                    gender = gender,
+                    phone = phone,
+                )
+            }
         }
     }
 

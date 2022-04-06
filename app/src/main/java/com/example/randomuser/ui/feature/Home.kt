@@ -47,7 +47,7 @@ fun Home() {
 sealed class HomeNavigation(val route: String) {
     object User : HomeNavigation(route = "/user")
 
-    object UserDetail : HomeNavigation(route = "/user/{userId}/details") {
+    object UserDetail : HomeNavigation(route = "/user/{$USER_DETAIL_ARGUMENT_ID}/details") {
 
         fun createRoute(userId: String): String {
             return "/user/$userId/details"
@@ -55,3 +55,5 @@ sealed class HomeNavigation(val route: String) {
 
     }
 }
+
+const val USER_DETAIL_ARGUMENT_ID = "userId"

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Random User</string>
+    <string name="label_user_avatar">User avatar</string>
 </resources>

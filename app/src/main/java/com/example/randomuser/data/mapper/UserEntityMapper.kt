@@ -12,15 +12,17 @@ class UserEntityMapper @Inject constructor() {
     fun toUser(userEntity: UserEntity): User {
         return with(userEntity) {
             User(
-                id,
-                name,
-                avatarUrl
+                uuid = id,
+                name = name,
+                avatarUrl = avatarUrl,
+                email = email,
+                street = street,
+                city = city,
+                postcode = postcode,
+                gender = gender,
+                phone = phone
             )
         }
-    }
-
-    fun toUsers(userEntities: List<UserEntity>): List<User> {
-        return userEntities.map { toUser(it) }
     }
 
 }

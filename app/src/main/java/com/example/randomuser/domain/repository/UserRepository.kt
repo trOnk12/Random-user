@@ -7,6 +7,6 @@ class UserRepository @Inject constructor(
     private val userLocalSource: UserLocalSource
 ) {
 
-    suspend fun getUser(id: String) = userLocalSource.getUser(id)
+    suspend fun get(id: String) = userLocalSource.getUser(id)
 
 }
